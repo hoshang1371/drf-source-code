@@ -25,7 +25,13 @@ SECRET_KEY = 'django-insecure-pk^w+r-&d9gk3n=84_-ar*^+8k93c%r_zj4kem!qh@__q2nd49
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    "chrome-extension://eejfoncpjfgmeleakejdcanedmefagga",
+]
+
+CSRF_TRUSTED_ORIGINS = ['chrome-extension://eejfoncpjfgmeleakejdcanedmefagga']
+
 
 
 # Application definition
@@ -37,8 +43,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'rest_framework',
+    'rest_framework.authtoken',
+
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 
     'blog.apps.BlogConfig',
     'api.apps.ApiConfig',
@@ -52,6 +67,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.locale.LocaleMiddleware'
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -122,15 +139,22 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# ALLOWED_HOSTS = [
+#     "chrome-extension://eejfoncpjfgmeleakejdcanedmefagga",
+#     "http://127.0.0.1/"
+#     ]
+
+#b=[2]
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         #'rest_framework.permissions.AllowAny',
         'api.permissions.IsStaffOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         # JWT
         # knox
         # opauth
@@ -141,3 +165,7 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SITE_ID = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
