@@ -3,40 +3,82 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+# from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 from blog.models import Articale
 from .serializers import ArticleSerializers, UserSerializers
 from django.shortcuts import  render
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAdminUser ,IsAuthenticated
 from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsStaffOrReadOnly, IsSuperuserOrStaffReadOnly
 
-class ArticleList(ListCreateAPIView):
+# from rest_framework import filters
+
+
+# class ArticleList(ListCreateAPIView):
+#     queryset = Articale.objects.all()
+#     serializer_class = ArticleSerializers
+
+# class ArticleDetail(RetrieveUpdateDestroyAPIView):
+#     queryset = Articale.objects.all()
+#     serializer_class = ArticleSerializers
+#     permission_classes = (IsAuthorOrReadOnly, IsStaffOrReadOnly)
+
+
+class ArticleViewSet(ModelViewSet):
     queryset = Articale.objects.all()
     serializer_class = ArticleSerializers
+    filterset_fields = ['status', 'author__username']
+    search_fields = ["title","content","author__username","author__first_name","author__last_name"]
+    ordering_fields = ['publish', 'status']
+    ordering = ['-publish']
 
-class ArticleDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Articale.objects.all()
-    serializer_class = ArticleSerializers
-    permission_classes = (IsAuthorOrReadOnly, IsStaffOrReadOnly)
-
-
-class UserList(ListCreateAPIView):
-    queryset = User.objects.all()
     # def get_queryset(self):
-    #     print("__________________________")
-    #     print(self.request.user)
-    #     print(self.request.auth)
-    #     print("__________________________")
-        # return User.objects.all()
-    serializer_class = UserSerializers
-    #permission_classes = (IsSuperUser,)
-    permission_classes = (IsSuperuserOrStaffReadOnly,)
+    #     queryset = Articale.objects.all()
 
-class UserDetail(RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
+    #     status = self.request.query_params.get('status')
+    #     if status is not None:
+    #         queryset = queryset.filter(status= status)
+
+    #     author = self.request.query_params.get('author')
+    #     if author is not None:
+    #         #queryset = queryset.filter(author= author)
+    #         queryset = queryset.filter(author__username= author)
+            
+    #     return queryset
+
+    def get_permissions(self):
+        if self.action in ['list', 'create']:
+            permission_classes = [IsStaffOrReadOnly]
+        else:
+            permission_classes = [IsAuthorOrReadOnly, IsStaffOrReadOnly]
+        return [permission() for permission in permission_classes]  
+
+
+# class UserList(ListCreateAPIView):
+#     queryset = User.objects.all()
+#     # def get_queryset(self):
+#     #     print("__________________________")
+#     #     print(self.request.user)
+#     #     print(self.request.auth)
+#     #     print("__________________________")
+#         # return User.objects.all()
+#     serializer_class = UserSerializers
+#     #permission_classes = (IsSuperUser,)
+#     permission_classes = (IsSuperuserOrStaffReadOnly,)
+
+# class UserDetail(RetrieveUpdateDestroyAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializers
+#     #permission_classes = (IsSuperUser,)
+#     permission_classes = (IsSuperuserOrStaffReadOnly,)
+
+
+class UserViewSet(ModelViewSet):
+    #queryset = User.objects.all()
+    queryset = get_user_model().objects.all()
     serializer_class = UserSerializers
-    #permission_classes = (IsSuperUser,)
     permission_classes = (IsSuperuserOrStaffReadOnly,)
 
 
