@@ -5,9 +5,13 @@ from rest_framework.response import Response
 
 # from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import RetrieveAPIView
+# from rest_framework.generics import RetrieveAPIView
 from blog.models import Articale
-from .serializers import ArticleSerializers, UserSerializers, AuthorSerializers
+from .serializers import (
+    ArticleSerializers,
+     UserSerializers,
+    #   AuthorSerializers,
+    )
 from django.shortcuts import  render
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -86,9 +90,10 @@ class UserViewSet(ModelViewSet):
     permission_classes = (IsSuperuserOrStaffReadOnly,)
 
 
-class AuthorRetrieve(RetrieveAPIView):
-    queryset = get_user_model().objects.all()
-    serializer_class = AuthorSerializers
+# class AuthorRetrieve(RetrieveAPIView):
+#     # queryset = get_user_model().objects.all()
+#     queryset = get_user_model().objects.filter(is_staff=True)
+#     serializer_class = AuthorSerializers
 
 
 # class RevokeToken(APIView):

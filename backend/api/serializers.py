@@ -3,15 +3,27 @@ from blog.models import Articale
 # from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
-class AuthorSerializers(serializers.ModelSerializer):
-    class Meta:
-        #model = User
-        model = get_user_model()
-        fields = ["id", "username", "first_name", "last_name"]
+# class AuthorSerializers(serializers.ModelSerializer):
+#     class Meta:
+#         #model = User
+#         model = get_user_model()
+#         fields = ["id", "username", "first_name", "last_name"]
+
+
+class AuthorUserNameField(serializers.RelatedField):
+    def to_representation(self, value):
+        return value.username + " " + ":" + value.last_name + value.first_name
 
 
 class ArticleSerializers(serializers.ModelSerializer):
-    author =AuthorSerializers()
+    # author =AuthorSerializers()
+    # author = serializers.HyperlinkedIdentityField(view_name='api:authors-detail')
+    # author = AuthorUserNameField(read_only='True')
+    # author = serializers.CharField(source="author.username", read_only ='True')
+    def get_author(self, obj):
+        return obj.author.username
+
+    author = serializers.SerializerMethodField("get_author")
     class Meta:
         model = Articale
         # fields =(
