@@ -1,0 +1,11 @@
+{
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyNzcwODU3LCJpYXQiOjE2NTI3NzA1NTcsImp0aSI6ImJkYTkwNGM3ZTZjOTQxYWNhZjUxOTU1MjE3MjgyYzg0IiwidXNlcl9pZCI6MX0.HO6tjhK-qlJ3K-wT3vdChz4uXpTszxeFRZ3G0_omJqw",
+    "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY1Mjg1Njk1NywiaWF0IjoxNjUyNzcwNTU3LCJqdGkiOiJiNzA1MTMzNTliMDI0MTkwYjYxZDYzNmEyODhjMWI0OCIsInVzZXJfaWQiOjF9.KkwTpnoPqzImCetpo88VkVXWirvCQ6NG8L7cqFt1za4",
+    "user": {
+        "pk": 1,
+        "username": "hojjat",
+        "email": "hoshang.1371@yahoo.com",
+        "first_name": "",
+        "last_name": ""
+    }
+}

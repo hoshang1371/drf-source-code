@@ -1,6 +1,6 @@
 from django.urls import include, path
 # from .views import ArticleList, ArticleDetail, about_page, UserList, UserDetail
-from .views import UserViewSet,ArticleViewSet
+from .views import UserViewSet, ArticleViewSet, AuthorRetrieve
 
 from rest_framework import routers
 
@@ -13,7 +13,8 @@ app_name = "api"
 # urlpatterns = router.urls
 
 urlpatterns = [
-    path("",include(router.urls))
+    path("",include(router.urls)),
+    path("authors/<int:pk>", AuthorRetrieve.as_view(), name="authors-detail")
 ]
 # urlpatterns = [
 #     path("", ArticleList.as_view(), name= "list"),

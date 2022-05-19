@@ -5,8 +5,9 @@ from rest_framework.response import Response
 
 # from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import RetrieveAPIView
 from blog.models import Articale
-from .serializers import ArticleSerializers, UserSerializers
+from .serializers import ArticleSerializers, UserSerializers, AuthorSerializers
 from django.shortcuts import  render
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -29,10 +30,13 @@ from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsStaffOrReadOnly, IsS
 class ArticleViewSet(ModelViewSet):
     queryset = Articale.objects.all()
     serializer_class = ArticleSerializers
-    filterset_fields = ['status', 'author__username']
-    search_fields = ["title","content","author__username","author__first_name","author__last_name"]
-    ordering_fields = ['publish', 'status']
-    ordering = ['-publish']
+
+    def validate(self, value):
+        print("OK")
+    # filterset_fields = ['status', 'author__username']
+    # search_fields = ["title","content","author__username","author__first_name","author__last_name"]
+    # ordering_fields = ['publish', 'status']
+    # ordering = ['-publish']
 
     # def get_queryset(self):
     #     queryset = Articale.objects.all()
@@ -80,6 +84,11 @@ class UserViewSet(ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializers
     permission_classes = (IsSuperuserOrStaffReadOnly,)
+
+
+class AuthorRetrieve(RetrieveAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = AuthorSerializers
 
 
 # class RevokeToken(APIView):
